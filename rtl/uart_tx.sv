@@ -4,7 +4,7 @@
 //
 // uart_tx
 //
-// ----------------------------------------------------
+// --------------------------------------------------------
 module uart_tx(
     input tx_clk,tx_start,
     input rst, 
@@ -22,7 +22,14 @@ module uart_tx(
     logic parity_bit = 0;
     integer count = 0;
     
-    typedef enum bit [2:0]  {idle = 0, start_bit = 1, send_data = 2, send_parity = 3, send_first_stop = 4, send_sec_stop = 5, done = 6} state_type;
+    typedef enum bit [2:0]  { idle = 0, 
+                              start_bit = 1, 
+                              send_data = 2, 
+                              send_parity = 3, 
+                              send_first_stop = 4, 
+                              send_sec_stop = 5, 
+                              done = 6} state_type;
+
     state_type state = idle, next_state = idle;
     
     ////////////////////parity generator
@@ -66,8 +73,7 @@ module uart_tx(
     always@(*)
     begin
     case(state)
-      idle :
-       begin
+        idle : begin
                tx_done     = 1'b0; 
                tx          = 1'b1;
                tx_reg      = {(8){1'b0}}; 
@@ -76,18 +82,17 @@ module uart_tx(
                   next_state = start_bit;
                 else
                   next_state = idle;
-       end
-      ////////////////////////
-      start_bit : 
-      begin
+        end
+
+        ////////////////////////
+        start_bit : begin
                 tx_reg      = tx_data;
                 tx          = start_b;
                 next_state  = send_data;
-      end  
-      ///////////////////////////
-        
-      send_data:
-       begin
+        end  
+
+        ///////////////////////////
+        send_data: begin
                 if(count < (length - 1)) 
                    begin
                      next_state = send_data;
@@ -103,41 +108,37 @@ module uart_tx(
                     tx         = tx_reg[count];
                     next_state  = send_first_stop;
                     end
-      end  
-      ////////////////////////////////////////////////
+        end  
+        ////////////////////////////////////////////////
       
-      send_parity: 
-      begin
+        send_parity: begin
                  tx          = parity_bit;
                  next_state  = send_first_stop;
-      end
-     ///////////////////////////////////////////////////
-      
-      send_first_stop : 
-      begin
-          tx  = stop_b;
-       if(stop2)
-         next_state  = send_sec_stop;       
-        else
-         next_state  = done;
-      end
-      ////////////////////////////////////
-      send_sec_stop : 
-      begin
-          tx          = stop_b;
-          next_state  = done;
-      end
-      
+        end
+
+        ///////////////////////////////////////////////////
+        send_first_stop : begin
+            tx  = stop_b;
+            if(stop2)           
+                next_state  = send_sec_stop;       
+            else
+                next_state  = done;
+        end
+
+        ////////////////////////////////////
+        send_sec_stop : begin
+            tx          = stop_b;
+            next_state  = done;
+        end
    
-    ////////////////////////////////
-    
-    done :
-    begin
-         tx_done        = 1'b1;
-         next_state  = idle;
-    end
-    //////////////////////////////////////////////////
-    default : next_state  = idle;
+        ////////////////////////////////
+        done : begin
+            tx_done        = 1'b1;
+            next_state  = idle;
+        end
+
+        //////////////////////////////////////////////////
+        default : next_state  = idle;
     
     endcase
     end
@@ -146,38 +147,38 @@ module uart_tx(
  
  always@(posedge tx_clk)
  begin
- case(state)
-   idle : begin
-     count <= 0;
-   end
+    case(state)
+        idle : begin
+            count <= 0;
+        end
    
-  start_bit : begin
-    count  <= 0;
-  end 
+        start_bit : begin
+            count  <= 0;
+        end 
   
-  send_data: begin
-    count <= count + 1;
-  end
+        send_data: begin
+            count <= count + 1;
+        end
    
-  send_parity: begin
-     count <= 0;
-  end 
+        send_parity: begin
+            count <= 0;
+        end 
  
-  send_first_stop : begin
-    count <= 0;
-  end
+        send_first_stop : begin
+            count <= 0;
+        end
  
-  send_sec_stop : begin
-    count <= 0;
-  end
+        send_sec_stop : begin
+            count <= 0;
+        end
   
-  done : begin
-    count <= 0;
-  end
+        done : begin
+            count <= 0;
+        end
   
-    default : count <= 0;
+        default : count <= 0;
      
- endcase
+    endcase
  end
  
  ////////////////////////////////////////////////////////////////////

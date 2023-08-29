@@ -32,55 +32,46 @@ class driver extends uvm_driver #(transaction);
   
   
   
-  task reset_dut();
- 
-    repeat(5) 
-    begin
-    vif.rst      <= 1'b1;  ///active high reset
-    vif.tx_start <= 1'b0;
-    vif.rx_start <= 1'b0;
-    vif.tx_data  <= 8'h00;
-    vif.baud     <= 16'h0;
-    vif.length   <= 4'h0;
-    vif.parity_type <= 1'b0;
-    vif.parity_en   <= 1'b0;
-    vif.stop2  <= 1'b0;
+task reset_dut();
+    repeat(5) begin
+        vif.rst      <= 1'b1;  ///active high reset
+        vif.tx_start <= 1'b0;
+        vif.rx_start <= 1'b0;
+        vif.tx_data  <= 8'h00;
+        vif.baud     <= 16'h0;
+        vif.length   <= 4'h0;
+        vif.parity_type <= 1'b0;
+        vif.parity_en   <= 1'b0;
+        vif.stop2  <= 1'b0;
    `uvm_info("DRV", "System Reset : Start of Simulation", UVM_MEDIUM);
     @(posedge vif.clk);
-      end
-  endtask
+    end
+endtask
   
-  task drive();
+task drive();
     reset_dut();
-   forever begin
-     
-         seq_item_port.get_next_item(tr);
-     
-                                             
-                            vif.rst         <= 1'b0;
-                            vif.tx_start    <= tr.tx_start;
-                            vif.rx_start    <= tr.rx_start;
-                            vif.tx_data     <= tr.tx_data;
-                            vif.baud        <= tr.baud;
-                            vif.length      <= tr.length;
-                            vif.parity_type <= tr.parity_type;
-                            vif.parity_en   <= tr.parity_en;
-                            vif.stop2       <= tr.stop2;
-     `uvm_info("DRV", $sformatf("BAUD:%0d LEN:%0d PAR_T:%0d PAR_EN:%0d STOP:%0d TX_DATA:%0d", tr.baud, tr.length, tr.parity_type, tr.parity_en, tr.stop2, tr.tx_data), UVM_NONE);
-                            @(posedge vif.clk); 
-                            @(posedge vif.tx_done);
-     @(negedge vif.rx_done);
-                            
-     
-       seq_item_port.item_done();
-     
-   end
-  endtask
-  
+    forever begin
+        seq_item_port.get_next_item(tr);                
+            vif.rst         <= 1'b0;
+            vif.tx_start    <= tr.tx_start;
+            vif.rx_start    <= tr.rx_start;
+            vif.tx_data     <= tr.tx_data;
+            vif.baud        <= tr.baud;
+            vif.length      <= tr.length;
+            vif.parity_type <= tr.parity_type;
+            vif.parity_en   <= tr.parity_en;
+            vif.stop2       <= tr.stop2;
+        `uvm_info("DRIVER", $sformatf("BAUD:%0d LEN:%0d PAR_T:%0d PAR_EN:%0d STOP:%0d TX_DATA:%0d", tr.baud, tr.length, tr.parity_type, tr.parity_en, tr.stop2, tr.tx_data), UVM_NONE);
+        @(posedge vif.clk); 
+        @(posedge vif.tx_done);
+        @(negedge vif.rx_done);
+        seq_item_port.item_done();
+    end
+endtask
  
-  virtual task run_phase(uvm_phase phase);
+virtual task run_phase(uvm_phase phase);
     drive();
-  endtask
+endtask
  
   
 endclass

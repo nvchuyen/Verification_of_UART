@@ -27,7 +27,7 @@ module top_tb;
   initial begin
     uvm_config_db#(virtual uart_if)::set(null, "*", "vif", vif);
     run_test("first_test");
-   end
+  end
   
   
   initial begin

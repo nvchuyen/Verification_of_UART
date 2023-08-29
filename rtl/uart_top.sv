@@ -1,9 +1,9 @@
+`timescale 1ns / 1ps
+
 //-------------------------------------
 // 
 //
 //
-
-`timescale 1ns / 1ps
     
 //-------------------------------------
 //
@@ -18,7 +18,7 @@ module uart_top (
     input [3:0] length,
     input parity_type, parity_en,
     input stop2,
-    output tx_done,rx_done, tx_err,rx_err,
+    output tx_done,rx_done, tx_err, rx_err,
     output [7:0] rx_out
  );
  

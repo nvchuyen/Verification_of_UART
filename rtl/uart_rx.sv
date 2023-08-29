@@ -18,7 +18,8 @@ module uart_rx(
  
  typedef enum bit [2:0] {idle = 0, start_bit = 1, recv_data = 2, check_parity = 3, check_first_stop = 4, check_sec_stop= 5, done = 6} state_type;
  state_type state = idle, next_state = idle;
-     ///////////////////// reset detector
+    
+    ///////////////////// reset detector
     always@(posedge rx_clk)
     begin
       if(rst)
@@ -166,7 +167,7 @@ module uart_rx(
            next_state = idle;
            rx_error = 1'b0;
         end    
-  endcase
+    endcase
     end
     
  ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,53 +176,47 @@ module uart_rx(
     always@(posedge rx_clk)
     begin
       case(state)
-         idle: 
-          begin
+        idle: begin
              count     <= 0;
              bit_count <= 0;
          end
          
-         ////////////////////////////////////////////////
-         
-         start_bit: 
-         begin
+    //////////////////////////////////////////////////////////////////
+        start_bit: begin
             if(count < 15)
               count <= count + 1;
             else
               count <= 0;
          end
      
-     //////////////////////////////////////////////////////////////////  
-            recv_data: begin
+    //////////////////////////////////////////////////////////////////  
+        recv_data: begin
             if(count < 15)
               count <= count + 1;
             else begin
               count <= 0;
               bit_count <= bit_count + 1;
               end
-   
              end  
-         //////////////////////////////////////////////////
-         
-          check_parity: begin
+
+    /////////////////////////////////////////////////////////////////
+        check_parity: begin
               if(count < 15)
               count <= count + 1;
             else
-              count <= 0;
- 
-                        
-          end       
-     ////////////////////////////////////////////////////////////////////////////       
-            check_first_stop : 
-            begin
+              count <= 0; 
+            end   
+
+    ////////////////////////////////////////////////////////////////      
+        check_first_stop : begin
              if(count < 15)
               count <= count + 1;
             else
               count <= 0;
             end
             
-  ////////////////////////////////////////////////////////////////////////////////          
-            check_sec_stop: begin
+    ////////////////////////////////////////////////////////////////         
+        check_sec_stop: begin
              if(count < 15)
               count <= count + 1;
             else
@@ -229,12 +224,12 @@ module uart_rx(
            
              end
              
-    /////////////////////////////////////////////////////////////////////////         
+    ////////////////////////////////////////////////////////////////       
         done :  begin
            count <= 0;
            bit_count <= 0;
         end    
-  endcase
+    endcase
     end
     
  

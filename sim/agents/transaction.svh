@@ -33,7 +33,7 @@ class transaction extends uvm_sequence_item;
          logic tx_done, rx_done, tx_err, rx_err;
          logic [7:0] rx_out;
   
- 
+  
   
   constraint baud_c { baud inside {4800,9600,14400,19200,38400,57600}; }
   constraint length_c { length inside {5,6,7,8}; }
