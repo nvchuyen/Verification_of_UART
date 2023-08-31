@@ -26,6 +26,7 @@ import agent_pkg::*;
 
  
 ///////////////////random baud - fixed length = 8 - parity enable - parity type : random - single stop
+//////////////////////////////////////////////////////////
 class rand_baud extends uvm_sequence#(transaction);
   `uvm_object_utils(rand_baud)
   
@@ -52,9 +53,9 @@ class rand_baud extends uvm_sequence#(transaction);
         finish_item(tr);
       end
   endtask
-  
- 
-endclass
+endclass : rand_baud
+
+
 ////////////////////random baud - fixed length = 8 - parity enable - parity type : random - two stop
 //////////////////////////////////////////////////////////
 class rand_baud_with_stop extends uvm_sequence#(transaction);
@@ -82,10 +83,9 @@ class rand_baud_with_stop extends uvm_sequence#(transaction);
         finish_item(tr);
       end
   endtask
-  
+endclass : rand_baud_with_stop
  
-endclass
- 
+
 //////////////////////////////////////////////////////////
 ////////////////////fixed length = 5 - variable baud - with parity
 class rand_baud_len5p extends uvm_sequence#(transaction);
@@ -103,10 +103,10 @@ class rand_baud_len5p extends uvm_sequence#(transaction);
         tr = transaction::type_id::create("tr");
         start_item(tr);
         assert(tr.randomize);
-        tr.op     = length5wp;
+        tr.op        = length5wp;
         tr.rst       = 1'b0;
         tr.tx_data   = {3'b000, tr.tx_data[7:3]};
-        tr.length = 5;
+        tr.length    = 5;
         tr.tx_start  = 1'b1;
         tr.rx_start  = 1'b1;
         tr.parity_en = 1'b1;
@@ -114,9 +114,7 @@ class rand_baud_len5p extends uvm_sequence#(transaction);
         finish_item(tr);
       end
   endtask
-  
- 
-endclass
+endclass : rand_baud_len5p
  
  
  
@@ -131,27 +129,25 @@ class rand_baud_len6p extends uvm_sequence#(transaction);
     super.new(name);
   endfunction
   
-  virtual task body();
-    repeat(5)
-      begin
-        tr = transaction::type_id::create("tr");
-        start_item(tr);
-        assert(tr.randomize);
-        tr.op     = length6wp;
-        tr.rst       = 1'b0;
-        tr.length = 6;
-        tr.tx_data   = {2'b00, tr.tx_data[7:2]};
-        tr.tx_start  = 1'b1;
-        tr.rx_start  = 1'b1;
-        tr.parity_en = 1'b1;
-        tr.stop2     = 1'b0;
-        finish_item(tr);
-      end
-  endtask
-  
+    virtual task body();
+        repeat(5) begin
+            tr = transaction::type_id::create("tr");
+            start_item(tr);
+            assert(tr.randomize);
+            tr.op        = length6wp;
+            tr.rst       = 1'b0;
+            tr.length    = 6;
+            tr.tx_data   = {2'b00, tr.tx_data[7:2]};
+            tr.tx_start  = 1'b1;
+            tr.rx_start  = 1'b1;
+            tr.parity_en = 1'b1;
+            tr.stop2     = 1'b0;
+            finish_item(tr);
+        end
+    endtask
+endclass : rand_baud_len6p
  
-endclass
- 
+
 //////////////////////////////////////////////////////////
 ////////////////////fixed length = 7 - variable baud - with parity
 class rand_baud_len7p extends uvm_sequence#(transaction);
@@ -163,26 +159,24 @@ class rand_baud_len7p extends uvm_sequence#(transaction);
     super.new(name);
   endfunction
   
-  virtual task body();
-    repeat(5)
-      begin
-        tr = transaction::type_id::create("tr");
-        start_item(tr);
-        assert(tr.randomize);
-        tr.op     = length7wp;
-        tr.rst       = 1'b0;
-        tr.length = 7;
-        tr.tx_data   = {1'b0, tr.tx_data[7:1]};
-        tr.tx_start  = 1'b1;
-        tr.rx_start  = 1'b1;
-        tr.parity_en = 1'b1;
-        tr.stop2     = 1'b0;
-        finish_item(tr);
-      end
-  endtask
-  
- 
-endclass
+    virtual task body();
+        repeat(5) begin
+            tr = transaction::type_id::create("tr");
+            start_item(tr);
+            assert(tr.randomize);
+            tr.op        = length7wp;
+            tr.rst       = 1'b0;
+            tr.length    = 7;
+            tr.tx_data   = {1'b0, tr.tx_data[7:1]};
+            tr.tx_start  = 1'b1;
+            tr.rx_start  = 1'b1;
+            tr.parity_en = 1'b1;
+            tr.stop2     = 1'b0;
+            finish_item(tr);
+        end
+    endtask
+endclass : rand_baud_len7p
+
  
 //////////////////////////////////////////////////////////
 ////////////////////fixed length = 8 - variable baud - with parity
@@ -195,27 +189,25 @@ class rand_baud_len8p extends uvm_sequence#(transaction);
     super.new(name);
   endfunction
   
-  virtual task body();
-    repeat(5)
-      begin
-        tr = transaction::type_id::create("tr");
-        start_item(tr);
-        assert(tr.randomize);
-        tr.op     = length8wp;
-        tr.rst       = 1'b0;
-        tr.length = 8;
-        tr.tx_data   =  tr.tx_data[7:0];
-        tr.tx_start  = 1'b1;
-        tr.rx_start  = 1'b1;
-        tr.parity_en = 1'b1;
-        tr.stop2     = 1'b0;
-        finish_item(tr);
-      end
-  endtask
-  
+    virtual task body();
+        repeat(5) begin
+            tr = transaction::type_id::create("tr");
+            start_item(tr);
+            assert(tr.randomize);
+            tr.op        = length8wp;
+            tr.rst       = 1'b0;
+            tr.length    = 8;
+            tr.tx_data   =  tr.tx_data[7:0];
+            tr.tx_start  = 1'b1;
+            tr.rx_start  = 1'b1;
+            tr.parity_en = 1'b1;
+            tr.stop2     = 1'b0;
+            finish_item(tr);
+        end
+    endtask
+endclass : rand_baud_len8p
  
-endclass
- 
+
 //////////////////////////////////////////////////////////
 ////////////////////fixed length = 5 - variable baud - without parity
 class rand_baud_len5 extends uvm_sequence#(transaction);
@@ -227,26 +219,23 @@ class rand_baud_len5 extends uvm_sequence#(transaction);
     super.new(name);
   endfunction
   
-  virtual task body();
-    repeat(5)
-      begin
-        tr = transaction::type_id::create("tr");
-        start_item(tr);
-        assert(tr.randomize);
-        tr.op     = length5wop;
-        tr.rst       = 1'b0;
-        tr.length = 5;
-        tr.tx_data   = {3'b000, tr.tx_data[7:3]};
-        tr.tx_start  = 1'b1;
-        tr.rx_start  = 1'b1;
-        tr.parity_en = 1'b0;
-        tr.stop2     = 1'b0;
-        finish_item(tr);
-      end
-  endtask
-  
- 
-endclass
+    virtual task body();
+        repeat(5) begin
+            tr = transaction::type_id::create("tr");
+            start_item(tr);
+            assert(tr.randomize);
+            tr.op        = length5wop;
+            tr.rst       = 1'b0;
+            tr.length    = 5;
+            tr.tx_data   = {3'b000, tr.tx_data[7:3]};
+            tr.tx_start  = 1'b1;
+            tr.rx_start  = 1'b1;
+            tr.parity_en = 1'b0;
+            tr.stop2     = 1'b0;
+            finish_item(tr);
+        end
+    endtask
+endclass : rand_baud_len5
  
  
 //////////////////////////////////////////////////////////
@@ -260,27 +249,25 @@ class rand_baud_len6 extends uvm_sequence#(transaction);
     super.new(name);
   endfunction
   
-  virtual task body();
-    repeat(5)
-      begin
-        tr = transaction::type_id::create("tr");
-        start_item(tr);
-        assert(tr.randomize);
-        tr.op     = length6wop;
-        tr.rst       = 1'b0;
-        tr.length = 6;
-        tr.tx_data   = {2'b00, tr.tx_data[7:2]};
-        tr.tx_start  = 1'b1;
-        tr.rx_start  = 1'b1;
-        tr.parity_en = 1'b0;
-        tr.stop2     = 1'b0;
-        finish_item(tr);
-      end
-  endtask
-  
+    virtual task body();
+        repeat(5) begin
+            tr = transaction::type_id::create("tr");
+            start_item(tr);
+            assert(tr.randomize);
+            tr.op        = length6wop;
+            tr.rst       = 1'b0;
+            tr.length    = 6;
+            tr.tx_data   = {2'b00, tr.tx_data[7:2]};
+            tr.tx_start  = 1'b1;
+            tr.rx_start  = 1'b1;
+            tr.parity_en = 1'b0;
+            tr.stop2     = 1'b0;
+            finish_item(tr);
+          end
+    endtask
+endclass : rand_baud_len6
  
-endclass
- 
+
 //////////////////////////////////////////////////////////
 ////////////////////fixed length = 7- variable baud - without parity
 class rand_baud_len7 extends uvm_sequence#(transaction);
@@ -298,9 +285,9 @@ class rand_baud_len7 extends uvm_sequence#(transaction);
         tr = transaction::type_id::create("tr");
         start_item(tr);
         assert(tr.randomize);
-        tr.op     = length7wop;
+        tr.op        = length7wop;
         tr.rst       = 1'b0;
-        tr.length = 7;
+        tr.length    = 7;
         tr.tx_data   = {1'b0, tr.tx_data[7:1]};
         tr.tx_start  = 1'b1;
         tr.rx_start  = 1'b1;
@@ -309,9 +296,7 @@ class rand_baud_len7 extends uvm_sequence#(transaction);
         finish_item(tr);
       end
   endtask
-  
- 
-endclass
+endclass : rand_baud_len7
  
  
 //////////////////////////////////////////////////////////
@@ -326,14 +311,14 @@ class rand_baud_len8 extends uvm_sequence#(transaction);
   endfunction
   
   virtual task body();
-    repeat(5)
+    repeat(30)
       begin
         tr = transaction::type_id::create("tr");
         start_item(tr);
         assert(tr.randomize);
-        tr.op     = length8wop;
+        tr.op        = length8wop;
         tr.rst       = 1'b0;
-        tr.length = 8;
+        tr.length    = 8;
         tr.tx_data   =  tr.tx_data[7:0];
         tr.tx_start  = 1'b1;
         tr.rx_start  = 1'b1;
@@ -342,11 +327,7 @@ class rand_baud_len8 extends uvm_sequence#(transaction);
         finish_item(tr);
       end
   endtask
-  
+endclass : rand_baud_len8
  
-endclass
- 
-
-
 endpackage : seq_lib_pkg
 

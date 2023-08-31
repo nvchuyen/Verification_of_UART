@@ -30,11 +30,12 @@ class driver extends uvm_driver #(transaction);
       `uvm_error("drv","Unable to access Interface");
   endfunction
   
-  
-  
+// -------------------------------------- 
+// reset DUT
+// --------------------------------------
 task reset_dut();
     repeat(5) begin
-        vif.rst      <= 1'b1;  ///active high reset
+        vif.rst      <= 1'b1;       ///active high reset
         vif.tx_start <= 1'b0;
         vif.rx_start <= 1'b0;
         vif.tx_data  <= 8'h00;
@@ -42,8 +43,8 @@ task reset_dut();
         vif.length   <= 4'h0;
         vif.parity_type <= 1'b0;
         vif.parity_en   <= 1'b0;
-        vif.stop2  <= 1'b0;
-   `uvm_info("DRV", "System Reset : Start of Simulation", UVM_MEDIUM);
+        vif.stop2       <= 1'b0;
+    `uvm_info("DRV", "System Reset : Start of Simulation", UVM_MEDIUM);
     @(posedge vif.clk);
     end
 endtask

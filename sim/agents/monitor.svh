@@ -29,7 +29,7 @@ virtual uart_if vif;
     
     virtual task run_phase(uvm_phase phase);
     forever begin
-      @(posedge vif.clk);
+        @(posedge vif.clk);
         if(vif.rst)  begin
             tr.rst = 1'b1;
             `uvm_info("MONITOR", "SYSTEM RESET DETECTED", UVM_NONE);

@@ -1,5 +1,9 @@
 
-TESTCASE=FRIST_TEST
+TESTCASE=FIRST_TEST
+# TESTCASE=test_rb6l
+# TESTCASE=test_rb7l
+# TESTCASE=test_rb8l
+
 
 
 export UVM_HOME=/11tools/MENTOR/questasim_10.7c/questasim/verilog_src/uvm-1.1d
@@ -18,7 +22,7 @@ elif [[ $1 = "build" ]]; then
 	vlog -sv -l vlog_rtl.log -f filelist_rtl.f -incr +acc=mnprt +cover=sbceft -assertdebug ;
 
 else
-	rm -rf work;
+	rm -rf work vsim.wlf;
 	vlib work;
 	vlog -incr -timescale=1ns/1ns -sv -f filelist_tb.f  -l vlog_tb.log +acc=mnprt -assertdebug +define+$TESTCASE;
 	vlog -sv -l vlog_rtl.log -f filelist_rtl.f -incr +acc=mnprt +cover=sbceft -assertdebug ;

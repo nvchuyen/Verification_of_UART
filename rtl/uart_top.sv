@@ -1,15 +1,10 @@
-`timescale 1ns / 1ps
-
-//-------------------------------------
-// 
-//
-//
-    
+`timescale 1ns / 1ps    
 //-------------------------------------
 //
 // RTL Description
 //
 //------------------------------------
+
 module uart_top (
     input clk, rst,
     input tx_start, rx_start,
@@ -26,8 +21,8 @@ wire tx_clk, rx_clk;
 wire tx_rx;
  
 clk_gen clk_dut (clk, rst, baud,tx_clk, rx_clk); 
-uart_tx tx_dut (tx_clk,tx_start, rst, tx_data, length, parity_type, parity_en, stop2, tx_rx, tx_done, tx_err);
-uart_rx rx_dut (rx_clk, rx_start, rst, tx_rx, length,parity_type, parity_en, stop2,rx_out,rx_done, rx_err);
+uart_tx tx_dut  (tx_clk,tx_start, rst, tx_data, length, parity_type, parity_en, stop2, tx_rx, tx_done, tx_err);
+uart_rx rx_dut  (rx_clk, rx_start, rst, tx_rx, length,parity_type, parity_en, stop2,rx_out,rx_done, rx_err);
  
 endmodule
  
